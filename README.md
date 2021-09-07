@@ -32,7 +32,7 @@ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Document
 # Build
 
 To build the executable code, enter the following command:
-> g++ max1160x-read.cpp -l wiringPi -o max1160x-read
+> g++ max116xx-read.cpp -l wiringPi -o max116xx-read
 
 # Usage
 
