@@ -1,9 +1,9 @@
-# rpi4-max1160x
-A testing example for MAX1160x analog-to-digital converter for RPi4
+# rpi4-max116xx
+A testing example for MAX116xx analog-to-digital converter for RPi4
 
 # Description
 
-MAX1160x is a family of multichannel ADCs (analog to digital converters) controlled via I2C interface. This simple software is used to config and read data from the MAX11602 ADC (currently). Other ICs from the MAX1160x family are not supported yet.
+MAX116xx is a family of multichannel ADCs (analog to digital converters) controlled via I2C interface. This simple software is used to config and read data from the MAX11602 ADC (currently). Other ICs from the MAX116xx family are not supported yet.
 
 # Platform info
 This code is being tested on the following configuration:
@@ -37,6 +37,6 @@ To build the executable code, enter the following command:
 # Usage
 
 Run the program
-> sudo ./max1160x-read
+> sudo ./max116xx-read
 or, to refresh the values on screen every 0,5s:
-> watch -n 1 sudo ./max1160x-read
+> watch -n 1 sudo ./max116xx-read
