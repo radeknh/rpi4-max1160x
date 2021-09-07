@@ -34,11 +34,6 @@ uint16_t readSingleCh(int fd, uint8_t channel)
    return result;
 }
 
-/*void readNChTest(int n, int &fd)
-{
-   
-}*/
-
 int main()
 {
    int fd, result;
@@ -51,12 +46,16 @@ int main()
    wiringPiI2CWrite(fd, CONFIG & 0b01111111); // MSB=0 chooses a configuration byte (7 bits)
    wiringPiI2CWrite(fd, SETUP | 0b10000000); // MSB=1 chooses a setup byte (7 bits)
 
-   result = readSingleCh(fd, 0);
+   for(int i=0; i<8; i++)
+   {
+      result = readSingleCh(fd, i);
+      cout << "Result CH" << i << " " << result << endl;
+   }
 
-   if(result == -1)
+   /*if(result == -1)
    {
       cout << "Error.  Errno is: " << errno << endl;
    }else{
       cout << "Result: " << result << endl;
-   }
+   }*/
 }
