@@ -5,17 +5,21 @@ Raspberry Pi 4 - test of MAX11602 read
 
 #include <iostream>
 #include <errno.h>
-#include <wiringPiI2C.h>
+#include "wiringPiI2Cmod.h"
+#include <wiringPi.h>
 #include <bitset>
+#include <unistd.h>
 
 using namespace std;
 
 #define MAX116xx_ADR    0x33  // MAX11602 - 0x6d, MAX11609 - 0x33
 #define RESOLUTION      10     // number of bits
 // configuration byte - for single channel (ch0) conversion, single-ended mode
-#define CONFIG          0b01101001  
+#define CONFIG          0b01100001  
 // setup byte - ref = VDD, internal clock, unipolar mode
 #define SETUP           0b10000010
+#define VREF 3.2 // volts
+#define CONFIGALL	0b00001111 //scan 8 channels
 
 
 
@@ -39,11 +43,12 @@ uint16_t readSingleCh(int fd, uint8_t channel)
    return result;
 }
 
-int main()
+int main(int argc, const char* argv[])
 {
    int fd, result = 0;
    bool commOk = 0;
-   // struct timespec remaining, request = {3, 500};
+   float voltage[8] = {0};
+   uint16_t buf[33] = {0};
 
    // Initialize the interface by giving it an external device ID instead of I2C device address.
    // It returns a standard file descriptor.
@@ -57,13 +62,24 @@ int main()
       commOk = 1;
       wiringPiI2CWrite(fd, SETUP | 0b10000000); // MSB=1 chooses a setup byte (7 bits)
    }
+   // read the all channels in one I2C command - the last I2C uint16_t is written first to buf
+   wiringPiI2CWrite(fd, CONFIGALL);
+   result = read(fd, buf+16, 16);
    
-   for(int i=0; i<1 && commOk; i++)
+   for(int i=0; i<33; i++)
    {
-      result = readSingleCh(fd, 4);
-      //result = wiringPiI2CReadReg16(fd,CONFIG);
-      //cout << "Result CH" << i << " " << result << endl;
+      std::cout << "Result all " << std::bitset<16>(buf[i]) 
+                << " " << buf[i] << endl;
+   }
+   /*
+   for(int i=0; i<8 && commOk; i++)
+   {
+      result = readSingleCh(fd, i);
       std::cout << "Result CH" << i << " " << std::bitset<16>(result) 
                 << " " << result << endl;
-   }
+      voltage[i] = (VREF*result)/1023;
+      cout << "Result in volts: " << voltage[i] << "V" << endl;
+   }*/
 }
+
+
