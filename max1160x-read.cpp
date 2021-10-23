@@ -1,31 +1,10 @@
 /******************************************************************************
 i2ctest.cpp
 Raspberry Pi 4 - test of MAX11602 read
-https://github.com/sparkfun/Pi_Wedge
-
-A brief demonstration of the Raspberry Pi I2C interface, using the SparkFun
-Pi Wedge breakout board.
 
 This example makes use of the Wiring Pi library
 The I2C API is documented here:
 https://projects.drogon.net/raspberry-pi/wiringpi/i2c-library/
-
-The init call returns a standard file descriptor.  More detailed configuration
-of the interface can be performed using ioctl calls on that descriptor.
-See the wiringPi I2C implementation (wiringPi/wiringPiI2C.c) for some examples.
-Parameters configurable with ioctl are documented here:
-http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/i2c/dev-interface
-
-Hardware connections:
-I2C 1 to MAX11602
-
-To build this file, I use the command:
->  g++ i2ctest.cpp -lwiringPi
-
-Then to run it, first the I2C kernel module needs to be loaded.  This can be
-done using the GPIO utility.
-> gpio load i2c 400
-> ./a.out
 ******************************************************************************/
 
 #include <iostream>
