@@ -27,7 +27,7 @@ uint16_t readSingleCh(uint8_t channel, int* fd)
    uint16_t result = 0x0000;
 
    uint8_t configurationByte = ( (channel<<1) & 0b00011110) | 0b01100001; //single ended mode, convert a single channel
-   config(configurationByte);
+   config(configurationByte, &fd);
 
 #if RESOLUTION > 8
    // for more than 8-bit MAX116xx
