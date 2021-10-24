@@ -11,30 +11,25 @@ using namespace std;
 
 #define MAX116xx_ADR    0x6d  // MAX11602 - 0x6d
 #define RESOLUTION      8     // number of bits
+// configuration byte - for single channel (ch0) conversion, single-ended mode
+#define CONFIG          0b01100001  
+// setup byte - ref = VDD, internal clock, unipolar mode
+#define SETUP           0b10000010
 
-void config(uint8_t data, int* fd)
-{
-   wiringPiI2CWrite(*fd, data & 0b01111111); // MSB=0 chooses a configuration byte (7 bits)
-}
-
-void setup(uint8_t data, int* fd)
-{
-   wiringPiI2CWrite(*fd, data | 0b10000000); // MSB=1 chooses a setup byte (7 bits)
-}
-
-uint16_t readSingleCh(uint8_t channel, int* fd)
+uint16_t readSingleCh(int fd, uint8_t channel)
 {
    uint16_t result = 0x0000;
-
-   uint8_t configurationByte = ( (channel<<1) & 0b00011110) | 0b01100001; //single ended mode, convert a single channel
-   config(configurationByte, &fd);
+   
+   //single ended mode, convert a single channel
+   uint8_t configurationByte = ( (channel<<1) & 0b00011110) | 0b01100001; 
+   wiringPiI2CWrite(fd, configurationByte);
 
 #if RESOLUTION > 8
    // for more than 8-bit MAX116xx
-   result = (wiringPiI2CRead(*fd) & 0x03)<<8; // MSB is returned first. [7-2] are high.
-   result |= wiringPiI2CRead(*fd) & 0x00FF; // read LSB
+   result = (wiringPiI2CRead(fd) & 0x03)<<8; // MSB is returned first. [7-2] are high.
+   result |= wiringPiI2CRead(fd) & 0x00FF; // read LSB
 #elseif
-   result = wiringPiI2CRead(*fd) & 0xFFFF;   
+   result = wiringPiI2CRead(fd) & 0xFFFF;   
 #endif
    return result;
 }
@@ -46,19 +41,22 @@ uint16_t readSingleCh(uint8_t channel, int* fd)
 
 int main()
 {
-   int fd, setup_byte, config_byte, result;
+   int fd, result;
 
    // Initialize the interface by giving it an external device ID instead of I2C device address.
    // It returns a standard file descriptor.
    fd = wiringPiI2CSetup(MAX116xx_ADR);
    if(fd < 0) cout << "I2C initialization error. Errno is: " << errno << endl;
 
+   wiringPiI2CWrite(fd, CONFIG & 0b01111111); // MSB=0 chooses a configuration byte (7 bits)
+   wiringPiI2CWrite(fd, SETUP | 0b10000000); // MSB=1 chooses a setup byte (7 bits)
+   
    // configuration byte - for single channel conversion, single-ended mode
    config(0b01100001, &fd);
    // setup byte - ref = VDD, internal clock, unipolar mode
    setup(0b10000010, &fd);
 
-   result = readSingleCh(1, &fd);
+   result = readSingleCh(fd, 0);
 
    if(result == -1)
    {
