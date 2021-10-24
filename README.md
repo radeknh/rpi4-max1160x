@@ -23,7 +23,7 @@ The documentation for WiringPi I2C library can be found here: http://wiringpi.co
 
 # Build
 
-> g++ max1160x-read.cpp -l wiringPi -o i2ctest
+> g++ max1160x-read.cpp -l wiringPi -o max1160x-read
 
 # Usage
 
