@@ -15,16 +15,28 @@ OS version: 5.4.0-1044-raspi
 # Dependencies
 
 1. WiringPi (gpio) version 2.52 or higher. The official WiringPi library is unsupported, the active fork can be found here: https://github.com/WiringPi/WiringPi
+2. To run the program, first the I2C kernel module needs to be loaded. This can be done using the GPIO utility.
+   > gpio load i2c 400
+   
+   In my case it was not necessary.
 
 # Notes
 
 This code has been created basing on https://github.com/AllAboutEE/MAX11609EEE-Breakout-Board library for MAX11609, and also on this article: https://learn.sparkfun.com/tutorials/raspberry-pi-spi-and-i2c-tutorial/all.
 The documentation for WiringPi I2C library can be found here: http://wiringpi.com/reference/i2c-library/
 
+The init call returns a standard file descriptor. More detailed configuration of the interface can be performed using ioctl calls on that descriptor. See the wiringPi I2C implementation (wiringPi/wiringPiI2C.c) for some examples.
+Parameters configurable with ioctl are documented here:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/i2c/dev-interface.rst
+
 # Build
 
+To build the executable code, enter the following command:
 > g++ max1160x-read.cpp -l wiringPi -o max1160x-read
 
 # Usage
 
-to do
+Run the program
+> sudo ./max1160x-read
+or, to refresh the values on screen every 0,5s:
+> watch -n 1 sudo ./max1160x-read
