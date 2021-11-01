@@ -14,8 +14,10 @@ OS version: 5.4.0-1044-raspi
 
 # Dependencies
 
-1. WiringPi (gpio) version 2.52 or higher. The official WiringPi library is unsupported, the active fork can be found here: https://github.com/WiringPi/WiringPi
-2. To run the program, first the I2C kernel module needs to be loaded. This can be done using the GPIO utility.
+1. WiringPi (gpio) version 2.50 or higher. The official WiringPi library is unsupported, the active fork can be found here: https://github.com/WiringPi/WiringPi
+2. g++ compiler and make:
+   > apt-get install g++ make
+3. To run the program, first the I2C kernel module needs to be loaded. This can be done using the GPIO utility.
    > gpio load i2c 400
    
    In my case it was not necessary.

@@ -5,8 +5,7 @@ Raspberry Pi 4 - test of MAX11602 read
 
 #include <iostream>
 #include <errno.h>
-#include "wiringPiI2Cmod.h"
-#include <wiringPi.h>
+#include <wiringPiI2C.h>
 #include <bitset>
 #include <unistd.h>
 
