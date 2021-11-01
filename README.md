@@ -9,7 +9,7 @@ MAX116xx is a family of multichannel ADCs (analog to digital converters) control
 This code is being tested on the following configuration:
 
 Platform:   Raspberry Pi 4B+
-OS:         Linux ubuntu
+OS:         Ubuntu Server 20.04.3 LTS 64-bit
 OS version: 5.4.0-1044-raspi
 
 # Dependencies
